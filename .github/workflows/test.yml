@@ -12,11 +12,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.1.0
-      - run: echo "===== Attempt 1 ====" > arti
+      - run: |
+        mkdir artifacts
+        echo "===== Attempt 1 ====" > artifaces/${GITHUB_SHA}
       - name: Archive logs
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: resources
           retention-days: 1
-          path: arti
+          path: artifacts/
+
+      - name: Find URL
