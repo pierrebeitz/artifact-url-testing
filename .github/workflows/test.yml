@@ -1,10 +1,6 @@
 name: Test
-
 on:
   push:
-  pull_request:
-  workflow_dispatch:
-
 jobs:
   build:
     name: Build
@@ -13,14 +9,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
       - run: |
-        mkdir artifacts
-        echo "===== Attempt 1 ====" > artifaces/${GITHUB_SHA}
+          mkdir artifacts
+          echo "===== Attempt 1 ====" > artifacts/${GITHUB_SHA}
       - name: Archive logs
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: resources
+          name: ${{ github.sha }}
           retention-days: 1
           path: artifacts/
-
+  find:
+    name: find
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Find URL
+        run: >
+          echo 
+          "Authorization: xyz" 
+          '{ "branch": "'${GITHUB_REF##*/}'", "sha": "'${GITHUB_SHA}'", "variable": { "URL": "TODO" } }'
