@@ -1,26 +1,17 @@
 name: Test
 
 on:
-  push:
   pull_request:
-  workflow_dispatch:
+    types: [ labeled ]
 
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'mylabel')
     name: Build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.1.0
       - run: |
         mkdir artifacts
-        echo "===== Attempt 1 ====" > artifaces/${GITHUB_SHA}
-      - name: Archive logs
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: resources
-          retention-days: 1
-          path: artifacts/
-
-      - name: Find URL
+        echo ${GITHUB_REF}
+        echo ${GITHUB_SHA}
